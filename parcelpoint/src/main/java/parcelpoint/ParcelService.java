@@ -4,8 +4,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ParcelService {
+    private static final Logger LOGGER = Logger.getLogger(ParcelService.class.getName());
+
     private List<Locker> lockers = new ArrayList<>();
     private List<Parcel> parcels = new ArrayList<>();
 
@@ -75,6 +79,7 @@ public class ParcelService {
                 writer.write(parcel.getCode() + "," + parcel.status + "\n");
             }
         } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Could not save parcels.csv", e);
         }
     }
 }

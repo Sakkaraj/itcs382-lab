@@ -1,2 +1,5 @@
 target/
 *.csv
+
+# Ignore the lab instruction
+Lab Code and Design Quality_1.1.pdf

@@ -1,6 +1,6 @@
 # Lab Report, Code Quality and Design Quality
 
-Repository URL:
+Repository URL: https://github.com/Sakkaraj/itcs382-lab
 
 ## Tools
 
@@ -10,7 +10,7 @@ Repository URL:
 | Maven | 27.0.1 |
 | IDE | VSCode |
 | SonarQube for IDE | 6.1.1 |
-| AI tool and exact model | GitHub Copilot |
+| AI tool and exact model | GitHub Copilot (with GPT-5.6 Luna) |
 
 ## Task 1. SonarQube on the starter code
 
@@ -139,22 +139,28 @@ P1,PICKED_UP
 
 | Item | bikeshare-poor | bikeshare-good |
 | --- | --- | --- |
-| Date | | |
-| AI tool and exact model | | |
-| Prompt (B or C as given, or your changed prompt in full) | | |
-| Builds with mvn package (yes or no) | | |
-| Number of classes, interfaces, enums and records | | |
-| SonarQube issues, total | | |
-| SonarQube issues, by rule | | |
-| AI review findings in Check 1 | | |
-| AI review findings in Check 2 | | |
-| Review output file in the reviews folder | | |
+| Date | 19/10/2026 | 19/10/2026 |
+| AI tool and exact model | GitHub Copilot (exact model name not exposed) | GitHub Copilot (exact model name not exposed) |
+| Prompt (B or C as given, or your changed prompt in full) | Prompt B as given | Prompt C as given |
+| Builds with mvn package (yes or no) | yes | yes |
+| Number of classes, interfaces, enums and records | 1 class, 0 interfaces, 0 enums, 0 records | 3 classes, 1 interface, 1 enum, 3 records |
+| SonarQube issues, total | 19 | 5 |
+| SonarQube issues, by rule | java:S106: 14; java:S1104: 3; java:S135: 1; java:S1172: 1 | java:S106: 5 |
+| AI review findings in Check 1 | 5 | 1 |
+| AI review findings in Check 2 | 9 | 2 |
+| Review output file in the reviews folder | [bikeshare-poor-review.md](reviews/bikeshare-poor-review.md) | [bikeshare-good-review.md](reviews/bikeshare-good-review.md) |
 
 4.1 Did SonarQube report any cohesion or coupling problem in bikeshare-poor? Quote the rule and the message if it did.
 
+No. The SonarQube findings were code-quality rules only: `java:S106` ("Replace this use of System.out by a logger"), `java:S1104` (make the public fields protected), `java:S135` (reduce the number of break and continue statements), and `java:S1172` (remove the unused `memberType` parameter). It did not report a cohesion or coupling rule.
+
 4.2 Did the AI review tell the two versions apart? Give one finding for bikeshare-poor that does not appear for bikeshare-good.
 
+Yes. For example, the poor review found that `Main.java:14-15` exposes public mutable maps and creates common coupling; this finding does not appear for the good version because its state is private inside `BikeShareService`.
+
 4.3 Which version would you rather extend with a new member type, such as a visitor who pays 4 baht per minute, and why?
+
+I would extend bikeshare-good. The `MemberType` enum owns the fee rule and the service receives a typed member value, so adding a visitor rate is localized; the poor version would require coordinating integer codes, the boolean fee flag, and shared arrays and maps in `Main`.
 
 ## Task 5. Reflection
 
@@ -168,4 +174,5 @@ P1,PICKED_UP
 
 | AI tool and exact model | Purpose | Files or parts that it produced or changed | How you checked its output |
 | --- | --- | --- | --- |
-| | | | |
+| GPT-5.6 Luna | Reviews the `parcelpoint` | Add `parcelpoint-review.md` to the `reviews` directory | Scans throughout the response |
+| GPT-5.6 Luna | Generate and review the BikeShare poor and good designs for Task 4 | `bikeshare-poor`, `bikeshare-good`, `reviews/bikeshare-poor-review.md`, `reviews/bikeshare-good-review.md` | Ran `mvn package` and scripted rent/return/quit workflows for both projects; inspected every Java file and ran SonarQube analysis. |
